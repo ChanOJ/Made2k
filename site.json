@@ -1,8 +1,6 @@
 {
   "repo": "Made2k",
-  "storage_zone": "made-sw",
-  "storage_zone_id": 1354959,
-  "pullzone": "made-gfx",
-  "pullzone_id": 5226116,
+  "storage_zone": "made2k",
+  "pullzone": "made2k",
   "hostname": "made.sauthier.family"
 }
