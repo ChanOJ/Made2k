@@ -5,6 +5,21 @@
 Archive of an old static website, served as-is from bunny.net at the hostname
 of [`site.json`](site.json). Kept online for history, no longer developed.
 
+## Changes from the original site
+
+The files are as served in 2000, apart from the changes needed to run in a modern browser:
+
+- `index.html` is now only the entry page (credits and an enter link). The framed site page
+  (`portal.html` in an iframe) moved to `site.html`: it used to open as a popup, which browsers
+  block. It shows an OS-like window frame on desktop (Windows 10/11, macOS 2012 to 2026, picked
+  from the user agent) and scales to the screen on mobile, with a rotate hint in portrait.
+  `?os=win10|win11|mac2012|mac2014|mac2020|mac2026` and `?device=mobile|desktop` force a look.
+- The obsolete browser sniffing script and alerts were dropped.
+- The banner image `ban460x55.gif`, absent from the archive, is no longer referenced.
+- The section pages (`d_art`, `ffuture`, `files`, `links`, `me`, `news`) declare their
+  windows-1252 charset (`<meta charset>`), which the host does not send, so accents display
+  correctly. The page bytes are otherwise unchanged.
+
 ## Layout
 
 | Path | Content |
