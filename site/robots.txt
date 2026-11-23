@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://made99.sauthier.family/sitemap.xml

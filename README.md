@@ -22,6 +22,12 @@ The files are as served in 1999, apart from the changes needed to run in a moder
   windows-1252 charset (`<meta charset>`), which the host does not send, so accents display
   correctly. The page bytes are otherwise unchanged.
 
+## Search engines
+
+`scripts/seo.py` writes `robots.txt` (allow everything, with the `Sitemap:` line) and `sitemap.xml` (indexable pages only) into `site/`; run `python3 -I scripts/seo.py` after any change of `site/`.
+
+The site pages are shown in the window of `site.html`. `scripts/frame-restore.js` (one `<script>` tag in every page, added by `seo.py`) sends a page opened on its own (a search result) to `site.html#p=<page>`, which loads it in the iframe; the page stays a plain file, so crawlers still read it.
+
 ## Layout
 
 | Path | Content |
