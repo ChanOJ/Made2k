@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>welcome strånger</title>
+<style>
+html, body { margin:0; height:100%; }
+body { background:#2b2d31; overflow:hidden; font-family:Verdana, Arial, Helvetica, sans-serif; }
+#made { display:block; width:777px; height:333px; border:0; background:#fff; }
+
+/* desktop: the iframe sits in an OS-like window */
+#stage { position:absolute; inset:0; display:flex; align-items:center; justify-content:center; }
+#win { background:#c0c0c0; border:2px solid; border-color:#fff #404040 #404040 #fff;
+       padding:2px; box-shadow:10px 10px 0 #0f1012; }
+#bar { display:flex; align-items:center; height:20px; padding:0 4px; margin-bottom:2px;
+       background:linear-gradient(90deg,#000080,#1084d0); color:#fff; font-size:12px; font-weight:bold; }
+#bar span { overflow:hidden; white-space:nowrap; text-overflow:ellipsis; }
+#screen { border:2px solid; border-color:#404040 #fff #fff #404040; line-height:0; }
+
+/* mobile: bare iframe, scaled to the screen */
+html.mobile body { background:#000; }
+html.mobile #win { border:0; padding:0; background:none; box-shadow:none; transform-origin:center center; }
+html.mobile #bar { display:none; }
+html.mobile #screen { border:0; }
+
+#rotate { display:none; position:fixed; inset:0; background:#000; color:#ccc; z-index:10;
+          flex-direction:column; align-items:center; justify-content:center; text-align:center; font-size:16px; }
+#rotate svg { width:96px; height:96px; margin-bottom:16px; animation:turn 2.5s ease-in-out infinite; }
+@keyframes turn { 0%,25% { transform:rotate(0); } 60%,100% { transform:rotate(-90deg); } }
+@media (orientation:portrait) {
+  html.mobile #rotate { display:flex; }
+  html.mobile #stage { visibility:hidden; }
+}
+</style>
+</head>
+
+<body>
+<div id="stage">
+  <div id="win">
+    <div id="bar"><span id="ttl">welcome strånger</span></div>
+    <div id="screen"><iframe id="made" src="portal.html" width="777" height="333" scrolling="no" frameborder="0" title="made"></iframe></div>
+  </div>
+</div>
+
+<div id="rotate">
+  <svg viewBox="0 0 64 64" fill="none" stroke="#ccc" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+    <rect x="20" y="6" width="24" height="42" rx="4"/><path d="M29 42h6"/>
+    <path d="M10 52a24 24 0 0 0 44 0"/><path d="M54 52l1-7M54 52l-7-1"/>
+  </svg>
+  rotate your device
+</div>
+
+<script>
+(function () {
+  var root = document.documentElement;
+  var frame = document.getElementById("made");
+  var win = document.getElementById("win");
+  var ttl = document.getElementById("ttl");
+  var mobile = !/Mobi|Android|iPhone|iPad|iPod/i.test(navigator.userAgent) ? false : true;
+  if (mobile) root.className = "mobile";
+
+  function syncTitle() {
+    try {
+      var t = frame.contentDocument.title;
+      if (t) { document.title = t; ttl.textContent = t; }
+    } catch (e) {}
+  }
+  frame.addEventListener("load", syncTitle);
+
+  function fit() {
+    if (!mobile) { win.style.transform = ""; return; }
+    var s = Math.min(window.innerWidth / 777, window.innerHeight / 333);
+    win.style.transform = "scale(" + s + ")";
+  }
+  window.addEventListener("resize", fit);
+  window.addEventListener("orientationchange", fit);
+  fit();
+
+  if (mobile) {
+    // best effort: fullscreen + landscape lock on the first tap on the page itself
+    document.addEventListener("click", function () {
+      var el = root;
+      var req = el.requestFullscreen || el.webkitRequestFullscreen;
+      var go = function () {
+        try { screen.orientation.lock("landscape").catch(function () {}); } catch (e) {}
+      };
+      try {
+        var p = req && req.call(el);
+        if (p && p.then) p.then(go, function () {}); else go();
+      } catch (e) {}
+    }, { once: true });
+  }
+})();
+</script>
+</body>
+</html>
