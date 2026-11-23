@@ -1,13 +1,13 @@
-# Made2k
+# Made99
 
-**Made (2000 version).** Made is a personal graphics and demoscene site from 2000, with an entry page, a framed portal page and sections for news, digital art (party flyers and t-shirt designs), a gallery of pictures in period formats (GIF, PCX, TGA, TIF) with downloadable packs, an about-me page and a links page.
+**Made (1999 version).** Made is a personal graphics and demoscene site from 1999, with an entry page, a framed portal page and sections for news, digital art (party flyers and t-shirt designs), a gallery of pictures in period formats (GIF, PCX, TGA, TIF) with downloadable packs, an about-me page and a links page.
 
 Archive of an old static website, served as-is from bunny.net at the hostname
 of [`site.json`](site.json). Kept online for history, no longer developed.
 
 ## Changes from the original site
 
-The files are as served in 2000, apart from the changes needed to run in a modern browser:
+The files are as served in 1999, apart from the changes needed to run in a modern browser:
 
 - `index.html` is now only the entry page (credits and an enter link). The framed site page
   (`portal.html` in an iframe) moved to `site.html`: it used to open as a popup, which browsers
