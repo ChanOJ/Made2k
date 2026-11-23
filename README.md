@@ -5,6 +5,8 @@
 Archive of an old static website, served as-is from bunny.net at the hostname
 of [`site.json`](site.json). Kept online for history, no longer developed.
 
+Full list of the sites: https://chanoj.github.io/
+
 ## Changes from the original site
 
 The files are as served in 1999, apart from the changes needed to run in a modern browser:
