@@ -7,23 +7,84 @@
 <title>welcome strånger</title>
 <style>
 html, body { margin:0; height:100%; }
-body { background:#2b2d31; overflow:hidden; font-family:Verdana, Arial, Helvetica, sans-serif; }
+body { background:radial-gradient(ellipse at 50% 45%, #3a3c41 0%, #25272b 55%, #141517 100%);
+       overflow:hidden; font-family:Verdana, Arial, Helvetica, sans-serif; }
 #made { display:block; width:777px; height:333px; border:0; background:#fff; }
-
-/* desktop: the iframe sits in an OS-like window */
 #stage { position:absolute; inset:0; display:flex; align-items:center; justify-content:center; }
-#win { background:#c0c0c0; border:2px solid; border-color:#fff #404040 #404040 #fff;
-       padding:2px; box-shadow:10px 10px 0 #0f1012; }
-#bar { display:flex; align-items:center; height:20px; padding:0 4px; margin-bottom:2px;
-       background:linear-gradient(90deg,#000080,#1084d0); color:#fff; font-size:12px; font-weight:bold; }
-#bar span { overflow:hidden; white-space:nowrap; text-overflow:ellipsis; }
-#screen { border:2px solid; border-color:#404040 #fff #fff #404040; line-height:0; }
+#screen { line-height:0; overflow:hidden; }
+#bar { position:relative; display:flex; align-items:center; box-sizing:border-box; user-select:none; }
+#ttl { overflow:hidden; white-space:nowrap; text-overflow:ellipsis; }
+.lights, .caps { display:none; }
+.lights i { display:block; width:12px; height:12px; border-radius:50%; }
+.caps b { display:flex; align-items:center; justify-content:center; width:46px; height:100%; }
+.caps svg { width:10px; height:10px; fill:none; stroke:currentColor; stroke-width:1; }
 
-/* mobile: bare iframe, scaled to the screen */
+/* ---- Windows 10: flat, square, caption buttons at the right ---- */
+[data-os=win10] #win { background:#fff; border:1px solid #1a8ad4; box-shadow:0 0 0 1px rgba(0,0,0,.25), 0 16px 40px rgba(0,0,0,.5), 0 4px 10px rgba(0,0,0,.4); }
+[data-os=win10] #bar { height:30px; background:#fff; color:#000; font:12px "Segoe UI",Tahoma,sans-serif; padding-left:10px; }
+[data-os=win10] #ttl { flex:1; }
+[data-os=win10] .caps { display:flex; height:100%; }
+[data-os=win10] .caps b:hover { background:#e5e5e5; }
+[data-os=win10] .caps b:last-child:hover { background:#e81123; color:#fff; }
+
+/* ---- Windows 11: rounded, Mica-like title bar ---- */
+[data-os=win11] #win { background:#f3f3f3; border-radius:8px; border:1px solid rgba(255,255,255,.12); overflow:hidden;
+  box-shadow:0 0 0 1px rgba(0,0,0,.3), 0 24px 56px rgba(0,0,0,.55), 0 6px 14px rgba(0,0,0,.4); }
+[data-os=win11] #bar { height:32px; background:linear-gradient(#e6ecf4,#eef0f5); color:#1b1b1b; font:12px "Segoe UI Variable","Segoe UI",sans-serif; padding-left:14px; }
+[data-os=win11] #ttl { flex:1; }
+[data-os=win11] .caps { display:flex; height:100%; }
+[data-os=win11] .caps b:hover { background:rgba(0,0,0,.06); }
+[data-os=win11] .caps b:last-child:hover { background:#c42b1c; color:#fff; }
+
+/* ---- macOS common ---- */
+[data-os^=mac] #bar { font:13px -apple-system,"Helvetica Neue",Helvetica,sans-serif; justify-content:center; }
+[data-os^=mac] .lights { display:flex; gap:8px; position:absolute; left:12px; top:50%; margin-top:-6px; }
+[data-os^=mac] #ttl { max-width:60%; font-weight:600; }
+
+/* ---- macOS 2012-2013 (Mountain Lion / Mavericks): grey gradient, glossy lights ---- */
+[data-os=mac2012] #win { border-radius:5px 5px 0 0; background:#ececec; border:1px solid #6b6b6b;
+  box-shadow:0 0 0 1px rgba(0,0,0,.2), 0 18px 40px rgba(0,0,0,.55), 0 4px 10px rgba(0,0,0,.4); }
+[data-os=mac2012] #bar { height:22px; background:linear-gradient(#e8e8e8,#b8b8b8); border-bottom:1px solid #6e6e6e;
+  border-radius:4px 4px 0 0; color:#3a3a3a; text-shadow:0 1px 0 rgba(255,255,255,.6); font-weight:normal; font-size:13px; }
+[data-os=mac2012] #ttl { font-weight:normal; }
+[data-os=mac2012] .lights { gap:6px; margin-top:-6px; left:8px; }
+[data-os=mac2012] .lights i { width:12px; height:12px; box-shadow:inset 0 -1px 2px rgba(0,0,0,.35), 0 1px 0 rgba(255,255,255,.6);
+  background:radial-gradient(circle at 50% 25%, rgba(255,255,255,.85) 0 30%, transparent 55%), var(--c); }
+[data-os=mac2012] .lights i:nth-child(1) { --c:#d9372b; } [data-os=mac2012] .lights i:nth-child(2) { --c:#e3a82a; } [data-os=mac2012] .lights i:nth-child(3) { --c:#48ad2f; }
+
+/* ---- macOS 2014-2019 (Yosemite - Catalina): flat light bar, flat lights ---- */
+[data-os=mac2014] #win { border-radius:5px 5px 0 0; background:#fff; border:1px solid rgba(0,0,0,.28);
+  box-shadow:0 0 0 1px rgba(0,0,0,.12), 0 22px 50px rgba(0,0,0,.5), 0 4px 10px rgba(0,0,0,.35); }
+[data-os=mac2014] #bar { height:22px; background:linear-gradient(#ebebeb,#d3d3d3); border-bottom:1px solid #b5b5b5; border-radius:4px 4px 0 0; color:#4d4d4d; font-size:13px; }
+[data-os=mac2014] #ttl { font-weight:normal; }
+[data-os=mac2014] .lights { gap:8px; margin-top:-6px; }
+[data-os=mac2014] .lights i { box-shadow:inset 0 0 0 .5px rgba(0,0,0,.2); }
+[data-os=mac2014] .lights i:nth-child(1) { background:#fc605c; } [data-os=mac2014] .lights i:nth-child(2) { background:#fdbc40; } [data-os=mac2014] .lights i:nth-child(3) { background:#34c84a; }
+
+/* ---- macOS 2020-2025 (Big Sur - Sequoia): ~10px radius ---- */
+[data-os=mac2020] #win { border-radius:10px; overflow:hidden; background:#fff; border:1px solid rgba(255,255,255,.1);
+  box-shadow:0 0 0 1px rgba(0,0,0,.4), 0 28px 64px rgba(0,0,0,.55), 0 6px 16px rgba(0,0,0,.4); }
+[data-os=mac2020] #bar { height:28px; background:linear-gradient(#ececec,#e2e2e2); border-bottom:1px solid #c8c8c8; color:#4d4d4d; }
+[data-os=mac2020] .lights { gap:8px; left:13px; }
+[data-os=mac2020] .lights i { box-shadow:inset 0 0 0 .5px rgba(0,0,0,.22); }
+[data-os=mac2020] .lights i:nth-child(1) { background:#ff5f57; } [data-os=mac2020] .lights i:nth-child(2) { background:#febc2e; } [data-os=mac2020] .lights i:nth-child(3) { background:#28c840; }
+
+/* ---- macOS 2026+ (Tahoe): large radius, translucent glass bar over the content ---- */
+[data-os=mac2026] #win { position:relative; border-radius:26px; overflow:hidden; background:#fff;
+  box-shadow:0 0 0 1px rgba(255,255,255,.14), 0 0 0 2px rgba(0,0,0,.35), 0 36px 80px rgba(0,0,0,.6), 0 8px 20px rgba(0,0,0,.4); }
+[data-os=mac2026] #win { background:linear-gradient(135deg,#cfd8ea,#e9d9ee 55%,#f4e3d6); }
+[data-os=mac2026] #bar { height:44px; color:#1d1d1f;
+  background:linear-gradient(rgba(255,255,255,.7), rgba(255,255,255,.4)); -webkit-backdrop-filter:blur(18px) saturate(1.6); backdrop-filter:blur(18px) saturate(1.6);
+  border-bottom:1px solid rgba(255,255,255,.4); }
+[data-os=mac2026] .lights { gap:9px; left:22px; margin-top:-7px; }
+[data-os=mac2026] .lights i { width:14px; height:14px; box-shadow:inset 0 0 0 .5px rgba(0,0,0,.25), 0 1px 3px rgba(0,0,0,.15); }
+[data-os=mac2026] .lights i:nth-child(1) { background:#ff5f57; } [data-os=mac2026] .lights i:nth-child(2) { background:#febc2e; } [data-os=mac2026] .lights i:nth-child(3) { background:#28c840; }
+[data-os=mac2026] #screen { padding-top:0; }
+
+/* ---- mobile: bare iframe scaled to the screen ---- */
 html.mobile body { background:#000; }
-html.mobile #win { border:0; padding:0; background:none; box-shadow:none; transform-origin:center center; }
+html.mobile #win { border:0; border-radius:0; background:none; box-shadow:none; transform-origin:center center; }
 html.mobile #bar { display:none; }
-html.mobile #screen { border:0; }
 
 #rotate { display:none; position:fixed; inset:0; background:#000; color:#ccc; z-index:10;
           flex-direction:column; align-items:center; justify-content:center; text-align:center; font-size:16px; }
@@ -39,7 +100,15 @@ html.mobile #screen { border:0; }
 <body>
 <div id="stage">
   <div id="win">
-    <div id="bar"><span id="ttl">welcome strånger</span></div>
+    <div id="bar">
+      <div class="lights"><i></i><i></i><i></i></div>
+      <span id="ttl">welcome strånger</span>
+      <div class="caps">
+        <b><svg viewBox="0 0 10 10"><path d="M0 5.5h10"/></svg></b>
+        <b><svg viewBox="0 0 10 10"><rect x=".5" y=".5" width="9" height="9"/></svg></b>
+        <b><svg viewBox="0 0 10 10"><path d="M0 0l10 10M10 0L0 10"/></svg></b>
+      </div>
+    </div>
     <div id="screen"><iframe id="made" src="portal.html" width="777" height="333" scrolling="no" frameborder="0" title="made"></iframe></div>
   </div>
 </div>
@@ -58,8 +127,44 @@ html.mobile #screen { border:0; }
   var frame = document.getElementById("made");
   var win = document.getElementById("win");
   var ttl = document.getElementById("ttl");
-  var mobile = !/Mobi|Android|iPhone|iPad|iPod/i.test(navigator.userAgent) ? false : true;
+  var ua = navigator.userAgent;
+  var q = new URLSearchParams(location.search);
+
+  // Layout: ?device=mobile|desktop wins over the user agent.
+  var mobile = /Mobi|Android|iPhone|iPad|iPod/i.test(ua);
+  if (q.get("device") === "mobile") mobile = true;
+  if (q.get("device") === "desktop") mobile = false;
   if (mobile) root.className = "mobile";
+
+  // Desktop frame: ?os=win10|win11|mac2012|mac2014|mac2020|mac2026 wins over detection.
+  // The user agent alone cannot tell Windows 10 from 11 (both "Windows NT 10.0") nor the macOS
+  // version (browsers freeze it at 10_15_7), so navigator.userAgentData platformVersion
+  // (Chromium only) refines it: Windows >= 13 is Windows 11; macOS 26+ is Tahoe, 11+ is
+  // Big Sur to Sequoia, 10.10-10.15 is Yosemite to Catalina, older is Mountain Lion/Mavericks.
+  // Without it: Windows -> win10, macOS -> latest style, Linux/other -> win10.
+  var OS = ["win10", "win11", "mac2012", "mac2014", "mac2020", "mac2026"];
+  function setOS(v) { root.setAttribute("data-os", v); }
+  var forced = q.get("os");
+  if (OS.indexOf(forced) >= 0) {
+    setOS(forced);
+  } else {
+    var isMac = /Macintosh|Mac OS X/.test(ua) && !/Mobi|iPhone|iPad/.test(ua);
+    setOS(isMac ? "mac2026" : "win10");
+    var uad = navigator.userAgentData;
+    if (uad && uad.getHighEntropyValues) {
+      uad.getHighEntropyValues(["platformVersion"]).then(function (h) {
+        var p = String(h.platformVersion || "").split(".");
+        var major = parseInt(p[0], 10), minor = parseInt(p[1], 10);
+        if (isNaN(major)) return;
+        if (isMac) {
+          setOS(major >= 26 ? "mac2026" : major >= 11 ? "mac2020" :
+                (major === 10 && minor >= 10) ? "mac2014" : (major === 10 && minor >= 8) ? "mac2012" : "mac2026");
+        } else if (/Windows/.test(ua)) {
+          setOS(major >= 13 ? "win11" : "win10");
+        }
+      }, function () {});
+    }
+  }
 
   function syncTitle() {
     try {
@@ -81,13 +186,12 @@ html.mobile #screen { border:0; }
   if (mobile) {
     // best effort: fullscreen + landscape lock on the first tap on the page itself
     document.addEventListener("click", function () {
-      var el = root;
-      var req = el.requestFullscreen || el.webkitRequestFullscreen;
+      var req = root.requestFullscreen || root.webkitRequestFullscreen;
       var go = function () {
         try { screen.orientation.lock("landscape").catch(function () {}); } catch (e) {}
       };
       try {
-        var p = req && req.call(el);
+        var p = req && req.call(root);
         if (p && p.then) p.then(go, function () {}); else go();
       } catch (e) {}
     }, { once: true });
