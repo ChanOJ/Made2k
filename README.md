@@ -21,11 +21,12 @@ The files are as served in 1999, apart from the changes needed to run in a moder
 - The section pages (`d_art`, `ffuture`, `files`, `links`, `me`, `news`) declare their
   windows-1252 charset (`<meta charset>`), which the host does not send, so accents display
   correctly. The page bytes are otherwise unchanged.
-- `gallery/` is a bare directory listing in the original, which bunny.net does not serve: simple
-  `index.html` listings (`scripts/gallery_index.py`) make the files reachable again. The e-mail
-  addresses of the entry page are no longer links (the text is unchanged); the Orange Juice link of
-  the links page points to Orange Juice 1999 and external links open in a new tab. The Picasa
-  leftovers (`.picasa.ini`) were dropped.
+- `gallery/` was served by the original web server as an automatic "Index of /gallery"
+  directory listing, which bunny.net does not do: static `index.html` pages in the same style
+  (`scripts/gallery_index.py`, names and sizes) make the files reachable again. The address of
+  z/nomad (family name) is no longer a link on the entry page; the Orange Juice link of the links
+  page points to Orange Juice 1999 and external links open in a new tab. The Picasa leftovers
+  (`.picasa.ini`) were dropped.
 
 ## Search engines
 

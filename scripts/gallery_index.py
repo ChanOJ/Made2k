@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Write site/gallery/index.html: a plain listing of the gallery files.
+"""Write site/gallery/index.html: directory listings of the gallery, in the style of the original Apache server's `Index of /gallery`.
 
 The original gallery was a bare directory listing, which bunny.net does not serve.
 Run it after any change of site/gallery/, then run scripts/seo.py (deterministic).
@@ -14,28 +14,30 @@ GALLERY = Path(__file__).resolve().parent.parent / "site" / "gallery"
 SKIP = {"index.html", ".picasa.ini", ".DS_Store"}
 
 
-def listing(folder):
-    rel = folder.relative_to(GALLERY).as_posix()
-    items = []
-    for p in sorted(folder.iterdir(), key=lambda p: (p.is_file(), p.name.lower())):
-        if p.name in SKIP:
-            continue
-        url = quote(p.name) + ("/" if p.is_dir() else "")
-        items.append((p.is_dir(), url, p.name + ("/" if p.is_dir() else "")))
-    return rel, items
+def size(p):
+    if p.is_dir():
+        return "-"
+    n = p.stat().st_size
+    return "%dK" % max(1, round(n / 1024)) if n < 1024 * 1024 else "%.1fM" % (n / 1024 / 1024)
 
 
 def page(folder):
-    rel, items = listing(folder)
-    title = "gallery" + ("/" + rel if rel != "." else "")
-    up = '<A href="../">../</A><BR>\n' if rel != "." else '<A href="../files/">&lt; back to files</A><BR>\n'
-    rows = "".join('<A href="%s">%s</A><BR>\n' % (u, escape(n)) for _, u, n in items)
+    """Classic Apache 1.3 "Index of /dir" page (name and size columns, no icons or dates)."""
+    rel = folder.relative_to(GALLERY).as_posix()
+    path = "/gallery" + ("" if rel == "." else "/" + rel)
+    entries = [p for p in sorted(folder.iterdir(), key=lambda p: p.name.lower()) if p.name not in SKIP]
+    width = max([len(p.name) + (1 if p.is_dir() else 0) for p in entries] + [16]) + 1
+    rows = ""
+    for p in entries:
+        name = p.name + ("/" if p.is_dir() else "")
+        link = '<A HREF="%s">%s</A>' % (quote(p.name) + ("/" if p.is_dir() else ""), escape(name))
+        rows += "%s%s%6s\n" % (link, " " * (width - len(name)), size(p))
+    head = "Name" + " " * (width - 4) + "  Size\n"
     return (
-        '<!DOCTYPE html>\n<html>\n<head>\n<meta charset="utf-8">\n'
-        "<title>måde's home [%s]</title>\n</head>\n"
-        '<BODY bgcolor="#DFF4F6" text="#696A6A" link="#696A6A" vlink="#696A6A" alink="#696A6A">\n'
-        '<font size="3" face="Verdana, Arial, Helvetica, sans-serif">\n<B>%s</B><BR><BR>\n%s%s</font>\n</body>\n</html>\n'
-        % (escape(title), escape(title), up, rows)
+        '<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">\n<HTML>\n<HEAD>\n'
+        '<META CHARSET="utf-8">\n<TITLE>Index of %s</TITLE>\n</HEAD><BODY>\n<H1>Index of %s</H1>\n<PRE>\n'
+        '%s<HR>\n<A HREF="../">Parent Directory</A>\n%s<HR>\n</PRE>\n</BODY></HTML>\n'
+        % (escape(path), escape(path), head, rows)
     )
 
 
