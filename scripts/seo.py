@@ -33,7 +33,7 @@ DOCTYPE = re.compile(rb"<!doctype[^>]*>\s*", re.I)
 TAG = b'<script src="/frame-restore.js"></script>'
 NOT_FOUND_NAMES = {"404.htm", "404.html"}
 # Alternative skins (/skin/<name>/...) duplicate the pages of the default one: not listed in the sitemap.
-SKIP_PREFIXES = ("skin/",)
+SKIP_PREFIXES = ("skin/", "gallery/")  # gallery/: plain file listings opened in their own window, never framed
 
 
 def html_files(site):
@@ -112,7 +112,7 @@ def main(argv=None):
     if restore.is_file():
         shutil.copyfile(restore, site / "frame-restore.js")
         for p in html_files(site):
-            if p.name.lower() not in NOT_FOUND_NAMES and inject(p):
+            if p.name.lower() not in NOT_FOUND_NAMES and not p.relative_to(site).as_posix().startswith(SKIP_PREFIXES) and inject(p):
                 injected += 1
     n = write_sitemaps(site, host)
     write_robots(site, host)

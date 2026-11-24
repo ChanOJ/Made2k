@@ -21,10 +21,15 @@ The files are as served in 1999, apart from the changes needed to run in a moder
 - The section pages (`d_art`, `ffuture`, `files`, `links`, `me`, `news`) declare their
   windows-1252 charset (`<meta charset>`), which the host does not send, so accents display
   correctly. The page bytes are otherwise unchanged.
+- `gallery/` is a bare directory listing in the original, which bunny.net does not serve: simple
+  `index.html` listings (`scripts/gallery_index.py`) make the files reachable again. The e-mail
+  addresses of the entry page are no longer links (the text is unchanged); the Orange Juice link of
+  the links page points to Orange Juice 1999 and external links open in a new tab. The Picasa
+  leftovers (`.picasa.ini`) were dropped.
 
 ## Search engines
 
-`scripts/seo.py` writes `robots.txt` (allow everything, with the `Sitemap:` line) and `sitemap.xml` (indexable pages only) into `site/`; run `python3 -I scripts/seo.py` after any change of `site/`.
+`scripts/seo.py` writes `robots.txt` (allow everything, with the `Sitemap:` line) and `sitemap.xml` (indexable pages only) into `site/`; run `python3 -I scripts/seo.py` after any change of `site/` (and `python3 -I scripts/gallery_index.py` after a change of `site/gallery/`).
 
 The site pages are shown in the window of `site.html`. `scripts/frame-restore.js` (one `<script>` tag in every page, added by `seo.py`) sends a page opened on its own (a search result) to `site.html#p=<page>`, which loads it in the iframe; the page stays a plain file, so crawlers still read it.
 
@@ -109,9 +114,3 @@ The same files serve every old site of the bunny.net account; only `site.json`,
      new zones, moves the hostname, deletes the old zones, deploys `site/` to
      the new storage zone and runs the smoke test (a few minutes of errors at
      most, while the files are uploaded and the certificate issued).
-
-## To Do
-
-Cross-links to fix in a batch pass (the targets are archived on `sauthier.family`; rewrite the `href`s):
-
-- `ojuice.planet-d.net` (1 link): Orange Juice 1999 (https://orangejuice99.sauthier.family).
