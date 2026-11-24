@@ -25,7 +25,7 @@ def page(folder):
     """Classic Apache 1.3 "Index of /dir" page (name and size columns, no icons or dates)."""
     rel = folder.relative_to(GALLERY).as_posix()
     path = "/gallery" + ("" if rel == "." else "/" + rel)
-    entries = [p for p in sorted(folder.iterdir(), key=lambda p: p.name.lower()) if p.name not in SKIP]
+    entries = [p for p in sorted(folder.iterdir(), key=lambda p: (not p.is_dir(), p.name.lower())) if p.name not in SKIP]
     width = max([len(p.name) + (1 if p.is_dir() else 0) for p in entries] + [16]) + 1
     rows = ""
     for p in entries:
