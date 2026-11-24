@@ -92,7 +92,8 @@ html.mobile #bar { display:none; }
 @keyframes turn { 0%,25% { transform:rotate(0); } 60%,100% { transform:rotate(-90deg); } }
 @media (orientation:portrait) {
   html.mobile #rotate { display:flex; }
-  html.mobile #stage { visibility:hidden; }
+  html.mobile #stage { display:none; }
+  html.mobile, html.mobile body { overflow:hidden; }
 }
 </style>
 </head>
