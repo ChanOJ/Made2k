@@ -32,6 +32,8 @@ The files are as served in 1999, apart from the changes needed to run in a moder
 
 `scripts/seo.py` writes `robots.txt` (allow everything, with the `Sitemap:` line) and `sitemap.xml` (indexable pages only) into `site/`; run `python3 -I scripts/seo.py` after any change of `site/` (and `python3 -I scripts/gallery_index.py` after a change of `site/gallery/`).
 
+The `gallery/` listings are left out of the sitemap and of `frame-restore` (`seo.py` skips `gallery/`): they open in their own window and are plain file indexes, not pages of the framed site.
+
 The site pages are shown in the window of `site.html`. `scripts/frame-restore.js` (one `<script>` tag in every page, added by `seo.py`) sends a page opened on its own (a search result) to `site.html#p=<page>`, which loads it in the iframe; the page stays a plain file, so crawlers still read it.
 
 ## Layout
@@ -42,6 +44,7 @@ The site pages are shown in the window of `site.html`. `scripts/frame-restore.js
 | `site.json` | The only site-specific settings: repository, storage zone, pull zone, hostname (plus zone ids, only until the first apply adopts them) |
 | `infra/` | OpenTofu: storage zone, pull zone, hostname (state encrypted, committed) |
 | `infra/secrets.env` | Proton Pass **references** to the secrets (vault `OldSites`), no secret values |
+| `scripts/gallery_index.py` | Write the Apache-style `index.html` listings of `site/gallery/` |
 | `scripts/deploy.py` | Sync `site/` to the storage zone, purge the CDN |
 | `scripts/smoke_test.py` | Check that the public site serves the files of `site/` |
 | `scripts/bootstrap.sh` | Set up a new repository of the same kind (see below) |
