@@ -109,3 +109,9 @@ The same files serve every old site of the bunny.net account; only `site.json`,
      new zones, moves the hostname, deletes the old zones, deploys `site/` to
      the new storage zone and runs the smoke test (a few minutes of errors at
      most, while the files are uploaded and the certificate issued).
+
+## To Do
+
+Cross-links to fix in a batch pass (the targets are archived on `sauthier.family`; rewrite the `href`s):
+
+- `ojuice.planet-d.net` (1 link): Orange Juice 1999 (https://orangejuice99.sauthier.family).
